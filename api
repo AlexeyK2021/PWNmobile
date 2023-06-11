@@ -1,0 +1,161 @@
+openapi: 3.0.3
+info:
+  title: Messanger API
+  version: 0.0.1
+servers:
+  - url: http://<host-ip>/api
+tags:
+  - name: message
+    description: Information about chats
+paths:
+  /message:
+    post: 
+      tags:
+        - message
+      summary: Add new message
+      requestBody:
+        description: Create a new chat
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+        required: true
+            
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '405':
+          description: Invalid input
+          
+  /message/{chatId}:
+    get:
+      tags: 
+        - message
+      summary: Find chat by ID
+      # operation: getMessageByChatId
+      parameters:
+        - name: chatId
+          in: path
+          description: ID of chat to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Message'
+        '405':
+          description: Invalid input
+    put: 
+      tags:
+        - message
+      summary: Update message by ID
+      # operation: updateMessageByChatId
+      parameters:
+        - name: chatId
+          in: path
+          description: ID of chat to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update a message
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+        required: true
+            
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '405':
+          description: Invalid input
+    
+    delete: 
+      tags:
+        - message
+      summary: Delete message by ID
+      # operation: deleteMessageByChatId
+      parameters:
+        - name: chatId
+          in: path
+          description: ID of chat to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                description: Deleted message ID
+                type: integer
+                format: int64
+                example: 10
+        '405':
+          description: Invalid input
+  /message/check/{userId}:
+    get:
+      tags: 
+        - message
+      summary: Сhecking for new messages
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user to check new messages
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                description: New messages available
+                type: boolean
+                format: int64
+                example: true
+        '405':
+          description: Invalid input
+      
+components:
+  schemas:
+    Message:
+      type: object
+      properties:
+        message_id: 
+          type: integer
+          format: int64
+          example: 10
+        sender_id:
+          type: integer
+          format: int64
+          example: 5
+        reciever_id:
+          type: integer
+          format: int64
+          example: 5
+        message_text:
+          type: string
+          example: Hello
+        message_time:
+          type: string
+          format: date-time
