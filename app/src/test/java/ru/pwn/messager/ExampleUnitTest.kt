@@ -1,4 +1,4 @@
-package ru.pwn.messanger
+package ru.pwn.messager
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package ru.pwn.messanger.ui.theme
+package ru.pwn.messager.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
