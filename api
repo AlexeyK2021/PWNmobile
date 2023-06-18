@@ -7,6 +7,8 @@ servers:
 tags:
   - name: message
     description: Information about chats
+  - name: user
+    description: Information about user
 paths:
   /message:
     post: 
@@ -15,6 +17,36 @@ paths:
       summary: Add new message
       requestBody:
         description: Create a new chat
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+        required: true
+            
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '405':
+          description: Invalid input
+    put: 
+      tags:
+        - message
+      summary: Update message by ID
+      # operation: updateMessageByChatId
+      parameters:
+        - name: chatId
+          in: path
+          description: ID of chat to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update a message
         content:
           application/json:
             schema:
@@ -51,36 +83,6 @@ paths:
           content:
             application/json:
               schema: 
-                $ref: '#/components/schemas/Message'
-        '405':
-          description: Invalid input
-    put: 
-      tags:
-        - message
-      summary: Update message by ID
-      # operation: updateMessageByChatId
-      parameters:
-        - name: chatId
-          in: path
-          description: ID of chat to return
-          required: true
-          schema:
-            type: integer
-            format: int64
-      requestBody:
-        description: Update a message
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Message'
-        required: true
-            
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
                 $ref: '#/components/schemas/Message'
         '405':
           description: Invalid input
@@ -135,7 +137,96 @@ paths:
                 example: true
         '405':
           description: Invalid input
-      
+    
+  /users/{userId}:
+    get:
+        tags: 
+          - user
+        summary: Get info about user
+        parameters:
+          - name: userId
+            in: path
+            description: ID of user to get info
+            required: true
+            schema:
+              type: integer
+              format: int64
+        responses:
+          '200':
+            description: successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+          '405':
+            description: Invalid input
+    delete: 
+      tags:
+        - user
+      summary: Delete user by ID
+      # operation: deleteMessageByChatId
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                description: Deleted user ID
+                type: integer
+                format: int64
+                example: 10
+        '405':
+          description: Invalid input
+  /users:
+    post:
+      tags:
+        - user
+      summary: Create a new user
+      requestBody:
+        description: Create a new chat
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+          '200':
+            description: successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+          '405':
+            description: Invalid input
+    put:
+      tags:
+        - user
+      summary: Update a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+          '200':
+            description: successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+          '405':
+            description: Invalid input
+    
+
 components:
   schemas:
     Message:
@@ -159,3 +250,20 @@ components:
         message_time:
           type: string
           format: date-time
+    User:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int64
+          example: 10
+        nickname:
+          type: string
+        city:
+          type: string
+        birthday:
+          type: string
+          format: date-time
+        icon_uri:
+          type: string
+          format: uri
