@@ -1,11 +1,13 @@
 package ru.pwn.messager.repositories
 
-import androidx.room.Insert
+import ru.pwn.messager.api.MessageApi
+import ru.pwn.messager.dao.MessageDao
 import javax.inject.Inject
 
 
-class MessageRepository @Inject constructor(
-
-){
+class MessageRepository(
+    private val messageDao: MessageDao,
+    private val messageApi: MessageApi
+) {
 
 }
