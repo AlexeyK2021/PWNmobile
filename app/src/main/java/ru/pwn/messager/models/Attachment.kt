@@ -5,19 +5,18 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-
 @Entity(
-    tableName = "Message",
+    tableName = "Attachment",
     foreignKeys = [
         ForeignKey(
-            entity = Chat::class,
+            entity = Message::class,
             parentColumns = ["id"],
-            childColumns = ["Chat_ID_Chat"]
+            childColumns = ["Message_ID_Message"]
         )
     ]
 )
-data class Message(
+data class Attachment(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(name = "Creation_date_M") var creationDate: Long,
-    @ColumnInfo(name = "Chat_ID_Chat") var chatId: Int
+    @ColumnInfo(name = "Path_Attach") var path: String,
+    @ColumnInfo(name = "Message_ID_Message") var messageId: Int
 )
