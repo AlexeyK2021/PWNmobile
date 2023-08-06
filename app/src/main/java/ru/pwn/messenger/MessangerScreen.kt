@@ -1,5 +1,6 @@
 package ru.pwn.messenger
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
@@ -24,14 +25,14 @@ fun MessengerApp(navController: NavHostController = rememberNavController()) {
     val context = LocalContext.current
 
     //TODO: Check if user already logged in
-    NavHost(navController = navController, startDestination = MessengerScreen.Register.name) {
+    NavHost(navController = navController, startDestination = MessengerScreen.ChatsList.name) {
         composable(route = MessengerScreen.Register.name) {
-            RegisterScreen(
-                onSaveButtonClicked = {})
+            RegisterScreen(onSaveButtonClicked = {})
         }
 
         composable(route = MessengerScreen.ChatsList.name) {
-            ChatsListScreen()
+            //TODO: Add to viewModel request for loading messages
+            ChatsListScreen(onChatSelect = {navController.navigate(MessengerScreen.Chat.name)})
         }
 
         composable(route = MessengerScreen.Chat.name) {

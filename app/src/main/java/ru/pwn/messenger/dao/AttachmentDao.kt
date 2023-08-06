@@ -12,7 +12,7 @@ interface AttachmentDao {
     fun getAttachmentsByMessageId(messageId: Int): List<Attachment>
 
     @Insert
-    fun new(attachment: Attachment)
+    fun add(attachment: Attachment)
 
     @Update
     fun update(attachment: Attachment)

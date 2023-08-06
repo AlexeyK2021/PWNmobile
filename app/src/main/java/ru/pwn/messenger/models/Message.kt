@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.util.Date
 
 
 @Entity(
@@ -18,6 +19,7 @@ import androidx.room.PrimaryKey
 )
 data class Message(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(name = "Creation_date_M") var creationDate: Long,
-    @ColumnInfo(name = "Chat_ID_Chat") var chatId: Int
+    @ColumnInfo(name = "Creation_date_M") var creationDate: Date,
+    @ColumnInfo(name = "Chat_ID_Chat") var chatId: Int,
+    @ColumnInfo(name = "Content") var content: String
 )

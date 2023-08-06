@@ -7,6 +7,7 @@ import ru.pwn.messenger.dao.AttachmentDao
 import ru.pwn.messenger.dao.ChatDao
 import ru.pwn.messenger.dao.ContactDao
 import ru.pwn.messenger.dao.MessageDao
+import ru.pwn.messenger.dao.MessageWithAttachmentDao
 import ru.pwn.messenger.dao.ReferalDao
 import ru.pwn.messenger.dao.UserDao
 import ru.pwn.messenger.models.Attachment
@@ -26,7 +27,7 @@ import ru.pwn.messenger.models.User
         User::class
     ],
     version = 1,
-    exportSchema = true
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class MessangerDatabase : RoomDatabase() {
@@ -36,4 +37,5 @@ abstract class MessangerDatabase : RoomDatabase() {
     abstract fun messageDao(): MessageDao
     abstract fun referalDao(): ReferalDao
     abstract fun userDao(): UserDao
+    abstract fun messageWithAttachmentDao(): MessageWithAttachmentDao
 }

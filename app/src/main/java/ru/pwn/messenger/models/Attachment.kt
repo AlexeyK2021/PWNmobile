@@ -7,13 +7,13 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "Attachment",
-    foreignKeys = [
-        ForeignKey(
-            entity = Message::class,
-            parentColumns = ["id"],
-            childColumns = ["Message_ID_Message"]
-        )
-    ]
+//    foreignKeys = [
+//        ForeignKey(
+//            entity = Message::class,
+//            parentColumns = ["id"],
+//            childColumns = ["Message_ID_Message"]
+//        )
+//    ]
 )
 data class Attachment(
     @PrimaryKey(autoGenerate = true) val id: Int,
