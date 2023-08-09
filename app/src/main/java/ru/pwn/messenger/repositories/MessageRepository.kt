@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ru.pwn.messenger.dao.MessageDao
-import ru.pwn.messenger.dao.MessageWithAttachmentDao
 import ru.pwn.messenger.models.Message
-import ru.pwn.messenger.models.MessageWithAttachment
 
 
 class MessageRepository(private val /*messageWithAttachmentDao: MessageWithAttachmentDao*/ messageDao: MessageDao) {
