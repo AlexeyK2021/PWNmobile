@@ -1,8 +1,12 @@
 package ru.pwn.messenger.screens
 
+import android.content.res.Resources.Theme
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,8 +27,13 @@ import ru.pwn.messenger.models.Message
 import ru.pwn.messenger.models.MessageWithAttachment
 import java.text.SimpleDateFormat
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
+import ru.pwn.messanger.R
+import ru.pwn.messenger.ui.theme.Pink40
 import java.util.Date
 import java.util.Locale
 
@@ -50,7 +59,14 @@ fun ChatScreen() {
 
 @Composable
 fun ChatBar(chatName: String) {
-    Text(text = chatName)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.tertiary)
+    ) {
+        Text(text = chatName, fontSize = 24.sp)
+    }
+
 }
 
 @Composable
@@ -69,6 +85,7 @@ fun OneMessage(messageWithAttachment: MessageWithAttachment, modifier: Modifier 
         modifier = modifier
             .padding(start = 10.dp, top = 5.dp)
             .clip(RoundedCornerShape(15))
+            .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(15))
     ) {
         Text(
             text = messageWithAttachment.message.content,
@@ -92,9 +109,13 @@ fun OneMessage(messageWithAttachment: MessageWithAttachment, modifier: Modifier 
 
 @Composable
 fun OneAttachment(attachment: Attachment, modifier: Modifier = Modifier) {
-    Text(text = attachment.path, modifier = modifier
-        .padding(start = 5.dp)
-        .height(14.dp), fontSize = 14.sp,)
+    Text(
+        text = attachment.path,
+        modifier = modifier
+            .padding(start = 5.dp)
+            .height(14.dp),
+        fontSize = 14.sp,
+    )
 }
 
 @Preview
