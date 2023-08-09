@@ -1,12 +1,27 @@
 package ru.pwn.messenger.repositories
 
-import ru.pwn.messenger.api.MessageApi
+import androidx.lifecycle.LiveData
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ru.pwn.messenger.dao.MessageDao
+import ru.pwn.messenger.dao.MessageWithAttachmentDao
+import ru.pwn.messenger.models.Message
+import ru.pwn.messenger.models.MessageWithAttachment
 
 
-class MessageRepository(
-    private val messageDao: MessageDao,
-    private val messageApi: MessageApi
-) {
+class MessageRepository(private val /*messageWithAttachmentDao: MessageWithAttachmentDao*/ messageDao: MessageDao) {
+    private var _messages: LiveData<List<Message>>? = null
+    val messages get() = _messages!!
+
+    init {
+        runBlocking {
+            val messageJob = launch {
+                _messages = messageDao.getAllMessagesLiveData()
+            }
+            messageJob.join()
+        }
+    }
+
+//    suspend fun getMessagesByChatId(chatId: Int) = messageDao.getMessagesByChatId(chatId)
 
 }

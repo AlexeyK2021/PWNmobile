@@ -8,12 +8,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LiveData
 import ru.pwn.messenger.models.Chat
 import java.util.Date
 
@@ -37,17 +41,18 @@ var chats = listOf(
 )
 
 @Composable
-fun ChatsListScreen(onChatSelect: (chatId: Int) -> Unit) {
-    ChatList(chats = chats, onChatSelect = onChatSelect)
+fun ChatsListScreen(chatsList: LiveData<List<Chat>>, onChatSelect: (chatId: Int) -> Unit) {
+    ChatList(liveChats = chatsList, onChatSelect = onChatSelect)
 }
 
 @Composable
-fun ChatList(chats: List<Chat>, onChatSelect: (chatId: Int) -> Unit) {
-    LazyColumn {
-        items(chats) { chat: Chat ->
-            ChatElement(chat = chat, onChatSelect = onChatSelect)
-        }
-    }
+fun ChatList(liveChats: LiveData<List<Chat>>, onChatSelect: (chatId: Int) -> Unit) {
+//    val chats: List<Chat>? by liveChats.observeAsState()
+//    LazyColumn {
+//        items(chats!!) { chat: Chat ->
+//            ChatElement(chat = chat, onChatSelect = onChatSelect)
+//        }
+//    }
 }
 
 @Composable
@@ -80,10 +85,10 @@ fun ChatElement(chat: Chat, onChatSelect: (chatId: Int) -> Unit, modifier: Modif
 //    )
 }
 
-@Preview
-@Composable
-fun ChatsPreview() {
-    //ChatElement(name = "Hello WORLD!!!!", onChatSelect = {})
-
-    ChatList(chats, {})
-}
+//@Preview
+//@Composable
+//fun ChatsPreview() {
+//    //ChatElement(name = "Hello WORLD!!!!", onChatSelect = {})
+//
+//    ChatList(chats, {})
+//}

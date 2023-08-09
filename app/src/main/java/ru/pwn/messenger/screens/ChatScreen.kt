@@ -37,21 +37,21 @@ import ru.pwn.messenger.ui.theme.Pink40
 import java.util.Date
 import java.util.Locale
 
-val messages = listOf(
-    MessageWithAttachment(
-        Message(1, Date(181515), 1, "Test__Msg__1"),
-        listOf(Attachment(1, "Hello", 1))
-    ),
-    MessageWithAttachment(
-        Message(2, Date(1848561548), 1, "Test__MSG__2"),
-        listOf(Attachment(2, "Hello", 2))
-    )
-)
+//val messages = listOf(
+//    MessageWithAttachment(
+//        Message(1, Date(181515), 1, "Test__Msg__1"),
+//        listOf(Attachment(1, "Hello", 1))
+//    ),
+//    MessageWithAttachment(
+//        Message(2, Date(1848561548), 1, "Test__MSG__2"),
+//        listOf(Attachment(2, "Hello", 2))
+//    )
+//)
 
 @Composable
-fun ChatScreen() {
+fun ChatScreen(chatName: String, messages: List<Message>) {
     Column {
-        ChatBar(chatName = "fdfsdfsdfsdfsdfsdfs")
+        ChatBar(chatName = chatName)
         ChatMessagesList(messages = messages)
     }
 
@@ -70,17 +70,17 @@ fun ChatBar(chatName: String) {
 }
 
 @Composable
-fun ChatMessagesList(messages: List<MessageWithAttachment>) {
+fun ChatMessagesList(messages: List<Message>) {
     LazyColumn(reverseLayout = true) {
         items(messages) { message ->
-            OneMessage(messageWithAttachment = message)
+            OneMessage(message = message)
         }
     }
 }
 
 @Composable
-fun OneMessage(messageWithAttachment: MessageWithAttachment, modifier: Modifier = Modifier) {
-    val attachments = messageWithAttachment.attachments
+fun OneMessage(message: Message, modifier: Modifier = Modifier) {
+//    val attachments = message.attachments
     Column(
         modifier = modifier
             .padding(start = 10.dp, top = 5.dp)
@@ -88,15 +88,15 @@ fun OneMessage(messageWithAttachment: MessageWithAttachment, modifier: Modifier 
             .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(15))
     ) {
         Text(
-            text = messageWithAttachment.message.content,
+            text = message.content,
             fontSize = 14.sp,
             modifier = modifier.align(Alignment.Start)
         )
-        Text(
-            text = convertDate(messageWithAttachment.message.creationDate),
-            fontSize = 10.sp,
-            modifier = modifier.align(Alignment.End)
-        )
+//        Text(
+//            text = convertDate(messageWithAttachment.message.creationDate),
+//            fontSize = 10.sp,
+//            modifier = modifier.align(Alignment.End)
+//        )
     }
 //    Column(modifier = modifier.border(BorderStroke(2.dp, Color.Blue), RoundedCornerShape(15))) {
 //        LazyColumn {
@@ -118,11 +118,11 @@ fun OneAttachment(attachment: Attachment, modifier: Modifier = Modifier) {
     )
 }
 
-@Preview
-@Composable
-fun list() {
-    ChatMessagesList(messages = messages)
-}
+//@Preview
+//@Composable
+//fun list() {
+//    ChatMessagesList(messages = messages)
+//}
 
 fun convertDate(date: Date): String {
     return SimpleDateFormat("EE, d MMM", Locale.getDefault()).format(date)

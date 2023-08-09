@@ -1,16 +1,19 @@
 package ru.pwn.messenger
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ru.pwn.messenger.repositories.ChatRepository
+import ru.pwn.messenger.repositories.MessageRepository
 import ru.pwn.messenger.screens.ChatScreen
 import ru.pwn.messenger.screens.ChatsListScreen
 import ru.pwn.messenger.screens.InviteScreen
 import ru.pwn.messenger.screens.RegisterScreen
+import ru.pwn.messenger.viewmodels.ChatViewModel
+import ru.pwn.messenger.viewmodels.MessageViewModel
 
 enum class MessengerScreen() {
     Register,
@@ -21,7 +24,11 @@ enum class MessengerScreen() {
 
 
 @Composable
-fun MessengerApp(navController: NavHostController = rememberNavController()) {
+fun MessengerApp(
+    navController: NavHostController = rememberNavController(),
+    chatViewModel: ChatViewModel = ChatViewModel(ChatRepository(messengerDb.chatDao())),
+    messageViewModel: MessageViewModel = MessageViewModel(MessageRepository(messengerDb.messageDao()))
+) {
     val context = LocalContext.current
 
     //TODO: Check if user already logged in
@@ -32,11 +39,18 @@ fun MessengerApp(navController: NavHostController = rememberNavController()) {
 
         composable(route = MessengerScreen.ChatsList.name) {
             //TODO: Add to viewModel request for loading messages
-            ChatsListScreen(onChatSelect = {navController.navigate(MessengerScreen.Chat.name)})
+            ChatsListScreen(
+                chatsList = chatViewModel.chats
+            ) {
+                chatViewModel.currentChat = it
+                navController.navigate(MessengerScreen.Chat.name)
+            }
         }
 
         composable(route = MessengerScreen.Chat.name) {
-            ChatScreen()
+            val messages = messageViewModel.getMessagesByChatId(chatViewModel.currentChat)
+            val chatName = chatViewModel.getCurrentChatNameById()
+            ChatScreen(chatName, messages)
         }
 
         composable(route = MessengerScreen.Invite.name) {
