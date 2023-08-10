@@ -22,9 +22,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        messengerDb = Room.databaseBuilder(
-            applicationContext, MessangerDatabase::class.java, "messenger_db"
-        ).createFromAsset("database/db.db").build()
+        messengerDb =
+            Room.databaseBuilder(applicationContext, MessangerDatabase::class.java, "messenger.db")
+                .createFromAsset("database/testDatabase.db")
+                .build()
 
 
 //        retrofit = Retrofit.Builder()

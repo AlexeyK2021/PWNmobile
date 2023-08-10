@@ -18,7 +18,7 @@ import java.util.Date
     ]
 )
 data class Message(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "Creation_date_M") var creationDate: Date,
     @ColumnInfo(name = "Chat_ID_Chat") var chatId: Int,
     @ColumnInfo(name = "Content") var content: String

@@ -2,10 +2,15 @@ package ru.pwn.messenger.screens
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -41,12 +46,14 @@ fun ChatsListScreen(chatsList: LiveData<List<Chat>>, onChatSelect: (chatId: Int)
 
 @Composable
 fun ChatList(liveChats: LiveData<List<Chat>>, onChatSelect: (chatId: Int) -> Unit) {
-//    val chats: List<Chat>? by liveChats.observeAsState()
-//    LazyColumn {
-//        items(chats!!) { chat: Chat ->
-//            ChatElement(chat = chat, onChatSelect = onChatSelect)
-//        }
-//    }
+    val chats by liveChats.observeAsState()
+    LazyColumn {
+        chats?.let {
+            items(it) { chat ->
+                ChatElement(chat = chat, onChatSelect = { onChatSelect(chat.id) })
+            }
+        }
+    }
 }
 
 @Composable

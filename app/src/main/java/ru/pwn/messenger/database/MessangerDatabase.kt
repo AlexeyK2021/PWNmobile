@@ -18,7 +18,7 @@ import ru.pwn.messenger.models.Message
         //User::class
     ],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class MessangerDatabase : RoomDatabase() {

@@ -8,6 +8,5 @@ class ChatViewModel(chatRepository: ChatRepository) : ViewModel() {
 
     var currentChat: Int = 0
 
-
-    fun getCurrentChatNameById() = chats.value!![currentChat].chatName
+    fun getCurrentChatNameById() = chats.value!![currentChat - 1].chatName
 }

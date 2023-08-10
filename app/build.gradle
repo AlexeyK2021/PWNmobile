@@ -9,11 +9,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    namespace 'ru.pwn.messanger'
+    namespace 'ru.pwn.messenger'
     compileSdk 33
 
     defaultConfig {
-        applicationId "ru.pwn.messanger"
+        applicationId "ru.pwn.messenger"
         minSdk 24
         targetSdk 33
         versionCode 1

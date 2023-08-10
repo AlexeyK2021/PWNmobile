@@ -1,11 +1,13 @@
 package ru.pwn.messenger
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ru.pwn.messenger.models.Message
 import ru.pwn.messenger.repositories.ChatRepository
 import ru.pwn.messenger.repositories.MessageRepository
 import ru.pwn.messenger.screens.ChatScreen
@@ -14,6 +16,8 @@ import ru.pwn.messenger.screens.InviteScreen
 import ru.pwn.messenger.screens.RegisterScreen
 import ru.pwn.messenger.viewmodels.ChatViewModel
 import ru.pwn.messenger.viewmodels.MessageViewModel
+import java.sql.Date
+import java.util.Calendar
 
 enum class MessengerScreen() {
     Register,
@@ -48,9 +52,17 @@ fun MessengerApp(
         }
 
         composable(route = MessengerScreen.Chat.name) {
-            val messages = messageViewModel.getMessagesByChatId(chatViewModel.currentChat)
-            val chatName = chatViewModel.getCurrentChatNameById()
-            ChatScreen(chatName, messages)
+                var messages = messageViewModel.getMessagesByChatId(chatViewModel.currentChat)
+                val chatName = chatViewModel.getCurrentChatNameById()
+                ChatScreen(chatName, messages, onMessageSendClicked = { content ->
+                    val message = Message(
+                        creationDate = Calendar.getInstance().time,
+                        chatId = chatViewModel.currentChat,
+                        content = content
+                    )
+                    messageViewModel.addMessage(message = message)
+                    messages = messageViewModel.getMessagesByChatId(chatViewModel.currentChat)
+                })
         }
 
         composable(route = MessengerScreen.Invite.name) {

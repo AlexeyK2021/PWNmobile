@@ -1,18 +1,24 @@
 package ru.pwn.messenger.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.State
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
@@ -21,6 +27,16 @@ import ru.pwn.messenger.models.Message
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.painterResource
+import androidx.lifecycle.LiveData
+import ru.pwn.messenger.R
+
 
 //val messages = listOf(
 //    MessageWithAttachment(
@@ -33,13 +49,38 @@ import java.util.Locale
 //    )
 //)
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChatScreen(chatName: String, messages: List<Message>) {
+fun ChatScreen(
+    chatName: String,
+    messages: State<List<Message>>,
+    onMessageSendClicked: (content: String) -> Unit
+) {
+    var inputText by remember { mutableStateOf("") }
+
     Column {
         ChatBar(chatName = chatName)
-        ChatMessagesList(messages = messages)
-    }
+        messages?.let {
+            if (it.isNotEmpty())
+                ChatMessagesList(messages = it)
+            else
+                NoMessages()
+        }
 
+        Row(verticalAlignment = Alignment.Bottom) {
+            TextField(
+                value = inputText,
+                onValueChange = { inputText = it },
+                label = { Text("Введите сообщение") }
+            )
+            Button(onClick = { onMessageSendClicked(inputText) }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.send_message),
+                    contentDescription = "Send message"
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -56,7 +97,7 @@ fun ChatBar(chatName: String) {
 
 @Composable
 fun ChatMessagesList(messages: List<Message>) {
-    LazyColumn(reverseLayout = true) {
+    LazyColumn(reverseLayout = false, modifier = Modifier.fillMaxHeight(0.90f)) {
         items(messages) { message ->
             OneMessage(message = message)
         }
@@ -74,14 +115,14 @@ fun OneMessage(message: Message, modifier: Modifier = Modifier) {
     ) {
         Text(
             text = message.content,
-            fontSize = 14.sp,
+            fontSize = 16.sp,
             modifier = modifier.align(Alignment.Start)
         )
-//        Text(
-//            text = convertDate(messageWithAttachment.message.creationDate),
-//            fontSize = 10.sp,
-//            modifier = modifier.align(Alignment.End)
-//        )
+        Text(
+            text = convertDate(message.creationDate),
+            fontSize = 12.sp,
+            modifier = modifier.align(Alignment.End)
+        )
     }
 //    Column(modifier = modifier.border(BorderStroke(2.dp, Color.Blue), RoundedCornerShape(15))) {
 //        LazyColumn {
@@ -108,6 +149,11 @@ fun OneMessage(message: Message, modifier: Modifier = Modifier) {
 //fun list() {
 //    ChatMessagesList(messages = messages)
 //}
+
+@Composable
+fun NoMessages() {
+    Text(text = "No messages yet. Write one")
+}
 
 fun convertDate(date: Date): String {
     return SimpleDateFormat("EE, d MMM", Locale.getDefault()).format(date)
